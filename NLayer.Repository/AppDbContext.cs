@@ -23,13 +23,32 @@ namespace NLayer.Repository
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            //Tek Tek de çagırabilirsin !! Yukarda yazdığımız kod ile hepisini getiriir...
-            modelBuilder.ApplyConfiguration(new ProductConfiguration());
 
-            base.OnModelCreating(modelBuilder); 
-                       
+            //Burada da Seed işlemlerini yazabiliriz - ama Best Practices Açısından ayrı klasör oluşturup orda kodları yazmak daha temiz olur
+            modelBuilder.Entity<ProductFeature>().HasData(new ProductFeature()
+            {
+                Id=1,
+                Color="Kırmızı",
+                Height= 100,
+                Width= 200,
+                ProductId=1,
+            },
+            new ProductFeature()
+            {
+                Id = 2,
+                Color = "Mavi",
+                Height = 300,
+                Width = 500,
+                ProductId = 2,
+            });
+
+            //Tek Tek de çagırabilirsin !! Yukarda yazdığımız kod ile hepisini getiriir...
+            //modelBuilder.ApplyConfiguration(new ProductConfiguration());
+                         
             //AppDbContext'imizin iiçin kirli durmasın diye "Configurations" diye klasöer oluşturup onun içinede "class" oluşturup -> Burada belirtecegimiz Atribut kodlarını oraya atadık!!!!  (Configurations klasörüne gidip incelliuyebilirsin)
             //modelBuilder.Entity<Category>().HasKey(x => x.Id);
+
+            base.OnModelCreating(modelBuilder); 
         }
     }
 }
