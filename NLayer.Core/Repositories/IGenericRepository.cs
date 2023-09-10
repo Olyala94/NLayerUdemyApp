@@ -7,7 +7,7 @@ namespace NLayer.Core.Repositories
         Task<T> GetByIdAsync(int id);
 
         //productRepository.GetAll(x=>x.id > 5).ToListAsync();
-        IQueryable<T> GetAll(Expression<Func<T, bool>> expression);
+        IQueryable<T> GetAll();
 
         //productRepository.Where(x=>x.Id > 5 ).OrderBy.ToListAsync(); //Id 5 den olan dataları alır
         IQueryable<T> Where(Expression<Func<T, bool>> expression); //IQueryable - direk Veri tabana gitmez,çagırdığım yerde gidecek(ToListDediğimiz zaman gidecek Veri Tabanına) 
