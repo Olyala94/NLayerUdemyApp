@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace NLayer.Repository.Repositories
 {
-    public class GenericRepositoryE<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         //Miras aldığımız sınıflardan erişmemizi istediğim için "protected"  - olarak belirtim.
         protected readonly AppDbContext _context;
         private readonly DbSet<T> _dbSet;
 
-        public GenericRepositoryE(AppDbContext context)
+        public GenericRepository(AppDbContext context)
         {
             _context = context;
             _dbSet = _context.Set<T>();
