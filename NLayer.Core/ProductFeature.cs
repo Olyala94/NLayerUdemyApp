@@ -12,12 +12,12 @@ namespace NLayer.Core
 
         public string Color { get; set; }
 
-        public int Hight { get; set; }
+        public int Height { get; set; }
 
         public int Width { get; set; }
 
         public int ProductId { get; set; } 
 
-        public Product Products { get; set; }
+        public Product Product { get; set; }
     }
 }
