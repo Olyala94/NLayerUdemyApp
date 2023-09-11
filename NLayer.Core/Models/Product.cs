@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NLayer.Core
+namespace NLayer.Core.Models
 {
-    public class Product:BaseEntity
+    public class Product : BaseEntity
     {
         public string Name { get; set; }
 
@@ -15,8 +15,8 @@ namespace NLayer.Core
         public decimal Price { get; set; }
 
         //Bir Tane Product'ın Bir Tane Category'si Olur......
-        public int CategoryId { get; set;}  //bire çok ilişki //BuCategoryId - bu Product Entity'si için bir ForeginKey'dir
-         
+        public int CategoryId { get; set; }  //bire çok ilişki //BuCategoryId - bu Product Entity'si için bir ForeginKey'dir
+
         public Category Category { get; set; } //Navigation Property'dir
 
         public ProductFeature ProductFeature { get; set; }  //Navigation Preperty'dir 
