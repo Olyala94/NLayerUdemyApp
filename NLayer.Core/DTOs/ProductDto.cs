@@ -1,6 +1,7 @@
-﻿namespace NLayer.Core.DTOs
+namespace NLayer.Core.DTOs
 {
-    public class ProductDto : BaseDto
+    public class ProductDto:BaseDto
+
     {
         public string Name { get; set; }
 

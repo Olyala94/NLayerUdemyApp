@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NLayer.Core.DTOs;
 using NLayer.Core.Models;
@@ -19,7 +18,7 @@ namespace NLayer.API.Controllers
             _mapper = mapper;
             _service = service;
         }
-            
+
         //Get api/products
         [HttpGet]
         public async Task<IActionResult> All()
@@ -36,7 +35,7 @@ namespace NLayer.API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var product = await _service.GetByIdAsync(id);
-            var productsDtos = _mapper.Map<ProductDto>(product); 
+            var productsDtos = _mapper.Map<ProductDto>(product);
             return CreateActionResult(CustomResponseDto<ProductDto>.Success(200, productsDtos));
         }
 
@@ -53,8 +52,8 @@ namespace NLayer.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(ProductUpdateDto productUpdateDto)
         {
-           await _service.UpdateAsync(_mapper.Map<Product>(productUpdateDto));
-      
+            await _service.UpdateAsync(_mapper.Map<Product>(productUpdateDto));
+
             return CreateActionResult(CustomResponseDto<NoContentDto>.Success(204));
         }
 
