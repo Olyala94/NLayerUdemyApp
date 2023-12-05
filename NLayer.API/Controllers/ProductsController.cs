@@ -12,11 +12,24 @@ namespace NLayer.API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IService<Product> _service;
+        private readonly IProductService _productService;
 
-        public ProductsController(IMapper mapper, IService<Product> service)
+        public ProductsController(IMapper mapper, IService<Product> service, IProductService productService)
         {
             _mapper = mapper;
             _service = service;
+            _productService = productService;       
+        }
+
+
+        // GET api/products/GetProductsWithCategory
+        [HttpGet("GetProductsWithCategory")]
+
+        //[action] - Direk metodun ismini alır orada yazar!!! her seferinde isim vermene gerek yok yani [action] dersen kendisi otomotik olarak metordumuzun ismini alır.
+        //[HttpGet("[action]")] 
+        public async Task<IActionResult> GetProductsWithCategory()
+        {
+            return CreateActionResult(await _productService.GetProductsWithCategory());
         }
 
         //Get api/products
