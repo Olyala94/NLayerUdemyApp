@@ -14,8 +14,8 @@ namespace NLayer.Repository.Repositories
         {
             //Include() metodu ile ==>"Eager Loading" yaptım(Data'yı çekerken Categorylerinde alınmasını istedim)
             //Eger Product'a bağlı Category'yide ihtiyaç olduğunda daha sonra çekersek o da ==>"Lazy Loidng" olur.
-            return await _context.Products.Include(x => x.Category).ToListAsync(); //Bu => "Eager Loading" (ilk Products'ları çektiğimiz anda Category'leride çekersek bu => "Eager Loading" olur.
 
+            return await _context.Products.Include(x => x.Category).ToListAsync(); //Bu => "Eager Loading" (ilk Products'ları çektiğimiz anda Category'leride çekersek bu => "Eager Loading" olur.
         }
     }
 }

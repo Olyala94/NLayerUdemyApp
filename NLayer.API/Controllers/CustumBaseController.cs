@@ -3,6 +3,8 @@ using NLayer.Core.DTOs;
 
 namespace NLayer.API.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class CustumBaseController : ControllerBase
     {
         [NonAction]
