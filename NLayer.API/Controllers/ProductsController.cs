@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NLayer.Core.DTOs;
 using NLayer.Core.Models;
@@ -13,13 +12,26 @@ namespace NLayer.API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IService<Product> _service;
+        private readonly IProductService _productService;
 
-        public ProductsController(IMapper mapper, IService<Product> service)
+        public ProductsController(IMapper mapper, IService<Product> service, IProductService productService)
         {
             _mapper = mapper;
             _service = service;
+            _productService = productService;       
         }
-            
+
+        // GET api/products/GetProductsWithCategory
+        [HttpGet("GetProductsWithCategory")]
+
+        //[action] - Direk metodun ismini alır orada yazar!!! her seferinde isim vermene gerek yok yani [action] dersen kendisi otomotik olarak metordumuzun ismini alır.
+        //[HttpGet("[action]")] 
+        public async Task<IActionResult> GetProductsWithCategory()
+        {
+            return CreateActionResult(await _productService.GetProductsWithCategory());
+        }
+
+
         //Get api/products
         [HttpGet]
         public async Task<IActionResult> All()
@@ -36,7 +48,7 @@ namespace NLayer.API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var product = await _service.GetByIdAsync(id);
-            var productsDtos = _mapper.Map<ProductDto>(product); 
+            var productsDtos = _mapper.Map<ProductDto>(product);
             return CreateActionResult(CustomResponseDto<ProductDto>.Success(200, productsDtos));
         }
 
@@ -53,8 +65,8 @@ namespace NLayer.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(ProductUpdateDto productUpdateDto)
         {
-           await _service.UpdateAsync(_mapper.Map<Product>(productUpdateDto));
-      
+            await _service.UpdateAsync(_mapper.Map<Product>(productUpdateDto));
+
             return CreateActionResult(CustomResponseDto<NoContentDto>.Success(204));
         }
 
