@@ -2,18 +2,14 @@
 using NLayer.Core.Repositories;
 using NLayer.Core.Services;
 using NLayer.Core.UnitOfWorks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NLayer.Service.Services
 {
     public class Service<T> : IService<T> where T : class
     {
+
         private readonly IGenericRepository<T> _repository; 
+
         private readonly IUnitOfWork _unitOfWork;
 
         public Service(IGenericRepository<T> repository, IUnitOfWork unitOfWork)
@@ -38,7 +34,9 @@ namespace NLayer.Service.Services
 
         public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
         {
+
            return await _repository.AnyAsync(expression);
+
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -53,8 +51,10 @@ namespace NLayer.Service.Services
 
         public async Task RemoveAsync(T entity)
         {
+
              _repository.Remove(entity);
             await _unitOfWork.CommitAsync();    
+
         }
 
         public async Task RemoveRangeAsync(IEnumerable<T> entities)
@@ -66,6 +66,7 @@ namespace NLayer.Service.Services
         public async Task UpdateAsync(T entity)
         {
             _repository.Update(entity);
+
             await _unitOfWork.CommitAsync();    
         }
 
