@@ -21,6 +21,7 @@ namespace NLayer.API.Controllers
             _productService = productService;       
         }
 
+
         // GET api/products/GetProductsWithCategory
         [HttpGet("GetProductsWithCategory")]
 
@@ -31,7 +32,6 @@ namespace NLayer.API.Controllers
         {
             return CreateActionResult(await _productService.GetProductsWithCategory());
         }
-
 
         //Get api/products
         [HttpGet]
