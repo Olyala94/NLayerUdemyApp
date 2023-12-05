@@ -1,4 +1,4 @@
-﻿namespace NLayer.Core.Models
+namespace NLayer.Core.Models
 {
     public class Product : BaseEntity
     {

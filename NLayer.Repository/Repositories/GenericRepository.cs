@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using NLayer.Core.Repositories;
 using System.Linq.Expressions;
 
@@ -23,7 +23,7 @@ namespace NLayer.Repository.Repositories
 
         public async Task AddRangeAsync(IEnumerable<T> entities)
         {
-            await _dbSet.AddRangeAsync(entities);
+            await _context.AddRangeAsync(entities);             
         }
 
         public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
@@ -31,7 +31,9 @@ namespace NLayer.Repository.Repositories
             return await _dbSet.AnyAsync(expression);
         }
 
-        public IQueryable<T> GetAll()
+
+        public  IQueryable<T> GetAll()
+
         {
             return _dbSet.AsNoTracking().AsQueryable();
         }
