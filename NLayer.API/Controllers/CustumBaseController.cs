@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using NLayer.Core.DTOs;
 
 namespace NLayer.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class CustumBaseController : ControllerBase
     {
         [NonAction]
@@ -22,6 +19,5 @@ namespace NLayer.API.Controllers
                 StatusCode = response.StatusCode,
             };
         }
-
     }
 }
