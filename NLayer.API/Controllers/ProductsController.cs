@@ -26,6 +26,7 @@ namespace NLayer.API.Controllers
         [HttpGet("GetProductsWithCategory")]
 
         //[action] - Direk metodun ismini alır orada yazar!!! her seferinde isim vermene gerek yok yani [action] dersen kendisi otomotik olarak metordumuzun ismini alır.
+
         //[HttpGet("[action]")] 
         public async Task<IActionResult> GetProductsWithCategory()
         {

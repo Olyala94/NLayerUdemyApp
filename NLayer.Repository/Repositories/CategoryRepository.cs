@@ -1,0 +1,19 @@
+﻿using Microsoft.EntityFrameworkCore;
+using NLayer.Core.Models;
+using NLayer.Core.Repositories;
+namespace NLayer.Repository.Repositories
+{
+    public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
+    {
+        public CategoryRepository(AppDbContext context) : base(context)
+        {
+        }
+
+        public async Task<Category> GetSingleCategorByIdWithProductsAsync(int categoryId)
+        {
+            //SingleOrDefaultAsync() ile FirstOrDefaultAsync() arasındaki fark nedir? 
+
+            return await _context.Categories.Include(x => x.Products).Where(x => x.Id == categoryId).SingleOrDefaultAsync();
+        }
+    }
+}
