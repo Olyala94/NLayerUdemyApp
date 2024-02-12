@@ -52,7 +52,6 @@ namespace NLayer.Service.Services
 
             if (hasproduct == null)
             {
-                //throw new ClientSideException($"{typeof(T).Name} not found");
                 throw new NotFoundExeption($"{typeof(T).Name} Id:{id} : not found.");
 
             }

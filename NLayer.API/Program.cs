@@ -40,6 +40,9 @@ internal class Program
         builder.Services.AddSwaggerGen();
 
 
+        //Generik olduðu için typeof ile içeriye girdik
+        builder.Services.AddScoped(typeof(NotfoundFilter<>));
+
         builder.Services.AddScoped<IUnitOfWork, UnitOFWork>();
         builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
