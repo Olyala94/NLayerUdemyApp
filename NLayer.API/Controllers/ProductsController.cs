@@ -50,8 +50,14 @@ namespace NLayer.API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var product = await _service.GetByIdAsync(id);
-            var productsDtos = _mapper.Map<ProductDto>(product);
-            return CreateActionResult(CustomResponseDto<ProductDto>.Success(200, productsDtos));
+
+            //Action Methodun içinde Null Controlünü yapmak iyi değil, sağlıklı değil!!!
+            //if (product == null)
+            //{
+            //    return CreateActionResult(CustomResponseDto<ProductDto>.Fail(400, "Bu id'ye sahip ürün bulunamadı."));
+            //}
+            var productsDto = _mapper.Map<ProductDto>(product);
+            return CreateActionResult(CustomResponseDto<ProductDto>.Success(200, productsDto));
         }
 
         [HttpPost]

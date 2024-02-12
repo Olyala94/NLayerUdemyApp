@@ -2,6 +2,7 @@
 using NLayer.Core.Repositories;
 using NLayer.Core.Services;
 using NLayer.Core.UnitOfWorks;
+using NLayer.Service.Exceptions;
 using System.Linq.Expressions;
 
 namespace NLayer.Service.Services
@@ -9,7 +10,7 @@ namespace NLayer.Service.Services
     public class Service<T> : IService<T> where T : class
     {
 
-        private readonly IGenericRepository<T> _repository; 
+        private readonly IGenericRepository<T> _repository;
 
         private readonly IUnitOfWork _unitOfWork;
 
@@ -19,9 +20,9 @@ namespace NLayer.Service.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<T>AddAsync(T entity)
+        public async Task<T> AddAsync(T entity)
         {
-           await _repository.AddAsync(entity);
+            await _repository.AddAsync(entity);
             await _unitOfWork.CommitAsync();
             return entity;
         }
@@ -36,7 +37,7 @@ namespace NLayer.Service.Services
         public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
         {
 
-           return await _repository.AnyAsync(expression);
+            return await _repository.AnyAsync(expression);
 
         }
 
@@ -47,14 +48,22 @@ namespace NLayer.Service.Services
 
         public async Task<T> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            var hasproduct = await _repository.GetByIdAsync(id);
+
+            if (hasproduct == null)
+            {
+                //throw new ClientSideException($"{typeof(T).Name} not found");
+                throw new NotFoundExeption($"{typeof(T).Name} Id:{id} : not found.");
+
+            }
+            return hasproduct;
         }
 
         public async Task RemoveAsync(T entity)
         {
 
-             _repository.Remove(entity);
-            await _unitOfWork.CommitAsync();    
+            _repository.Remove(entity);
+            await _unitOfWork.CommitAsync();
 
         }
 
@@ -68,7 +77,7 @@ namespace NLayer.Service.Services
         {
             _repository.Update(entity);
 
-            await _unitOfWork.CommitAsync();    
+            await _unitOfWork.CommitAsync();
         }
 
         public IQueryable<T> Where(Expression<Func<T, bool>> expression)
