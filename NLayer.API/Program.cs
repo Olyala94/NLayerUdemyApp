@@ -1,8 +1,11 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLayer.API.Filters;
 using NLayer.API.Middlewares;
+using NLayer.API.Modules;
 using NLayer.Core.Repositories;
 using NLayer.Core.Services;
 using NLayer.Core.UnitOfWorks;
@@ -41,19 +44,9 @@ internal class Program
 
 
         //Generik olduðu için typeof ile içeriye girdik
-        builder.Services.AddScoped(typeof(NotfoundFilter<>));
-
-        builder.Services.AddScoped<IUnitOfWork, UnitOFWork>();
-        builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-        builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
+        builder.Services.AddScoped(typeof(NotfoundFilter<>));      
         builder.Services.AddAutoMapper(typeof(MapProfile));
         
-        builder.Services.AddScoped<IProductRepository, ProductRepository>();
-        builder.Services.AddScoped<IProductService, ProductService>();
-
-        builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-        builder.Services.AddScoped<ICategoryService, CategoryService>();
-
         //Configuration
         builder.Services.AddDbContext<AppDbContext>(x =>
         {
@@ -62,6 +55,10 @@ internal class Program
                 option.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
             });
         });
+
+        builder.Host.UseServiceProviderFactory
+            (new AutofacServiceProviderFactory());
+        builder.Host.ConfigureContainer<ContainerBuilder>(containerbuilder => containerbuilder.RegisterModule(new RepoServiceModul()));
 
         var app = builder.Build();
 
