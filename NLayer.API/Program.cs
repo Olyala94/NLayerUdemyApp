@@ -28,25 +28,27 @@ internal class Program
         builder.Services.AddControllers(options =>
         options.Filters
             .Add(new ValidateFilterAttribute()))
-            .AddFluentValidation(x=>x
+            .AddFluentValidation(x => x
             .RegisterValidatorsFromAssemblyContaining<ProductDtoValidator>());
 
 
         //Default olarak bu Filter aktiv oldugu için bunu buraya yazmamýz lazým ki bizim yazdýðýmýz Validatimiz çalýþsýn (Ama MVC tarafýnda bunun aktin olma tarafý yok)
         builder.Services.Configure<ApiBehaviorOptions>(options =>
         {
-            options.SuppressModelStateInvalidFilter = true; 
+            options.SuppressModelStateInvalidFilter = true;
         });
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        //MemoryCach'i Aktif ettik
+        builder.Services.AddMemoryCache();
 
         //Generik olduðu için typeof ile içeriye girdik
-        builder.Services.AddScoped(typeof(NotfoundFilter<>));      
+        builder.Services.AddScoped(typeof(NotfoundFilter<>));
         builder.Services.AddAutoMapper(typeof(MapProfile));
-        
+
         //Configuration
         builder.Services.AddDbContext<AppDbContext>(x =>
         {
