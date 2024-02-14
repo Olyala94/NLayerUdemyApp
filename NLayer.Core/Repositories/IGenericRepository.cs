@@ -19,7 +19,7 @@ namespace NLayer.Core.Repositories
         Task AddRangeAsync(IEnumerable<T> entities); //Birden fazla kayedebilirim
         void Update(T entity); //Update - uzun süren işlem olmadığı için Async işlemi yok (kısa süren işlem , uzun süren işlem değil)
 
-        void Remove(T entity);  //Delete - uzun süren işlem olmadığı için Async işlemi yok (kısa süren işlem , uzun süren işlem değil)
+        void Remove(T entity);  //Delete - uzun süren işlem olmadığı için Async işlemi yok (kısa süren işlem , uzun süren işlem değil!!!)
 
         void RemoveRange(IEnumerable<T> entities);
     }
