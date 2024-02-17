@@ -27,10 +27,10 @@ namespace NLayer.Caching
             _unitOfWork = unitOfWork;
 
             //boş karakter memoride yer tutmasın diye bıraktım - sadece Bu CacheProductKey sahip Data var mı yok mu bunu öğrenmek istedim(yani Cach'lediği datayı almak istemiyor, oyüzden Memoride boşuna Avoked etmesin diye "_" alttere ile memoride avokeyd etmesini engelliyorum) 
-            if (_memoryCache.TryGetValue(CacheProductKey, out _))
+            if (!_memoryCache.TryGetValue(CacheProductKey, out _))
             {
                 //eger yok ise _memoryCache.Set et  tüm datayı el ve listele
-                _memoryCache.Set(CacheProductKey, _repository.GetProductsWithCategory());
+                _memoryCache.Set(CacheProductKey, _repository.GetProductsWithCategory().Result);
 
                 //Program.cs de ayarlama yapılacak (Cach'i Aktif etmememiz lazım)
                 // =>  builder.Services.AddMemoryCache(); eklenecek
@@ -42,10 +42,10 @@ namespace NLayer.Caching
         {
             //Cach'liyecegimiz Data Çok Sık Erişecegin Data ama Çok Sık Güncellemediğin bir şey olması lazım!!!
 
-            await _repository.AddAsync(entity);            
-            await _unitOfWork.CommitAsync();     
-            await CacheAllProductsAsync();  
-            return entity;  
+            await _repository.AddAsync(entity);
+            await _unitOfWork.CommitAsync();
+            await CacheAllProductsAsync();
+            return entity;
         }
 
         public async Task<IEnumerable<Product>> AddRangeAsync(IEnumerable<Product> entities)
@@ -53,7 +53,7 @@ namespace NLayer.Caching
             await _repository.AddRangeAsync(entities);
             await _unitOfWork.CommitAsync();
             await CacheAllProductsAsync();
-            return entities;    
+            return entities;
         }
 
         public Task<bool> AnyAsync(Expression<Func<Product, bool>> expression)
@@ -63,19 +63,20 @@ namespace NLayer.Caching
 
         public Task<IEnumerable<Product>> GetAllAsync()
         {
-           return Task.FromResult(_memoryCache.Get<IEnumerable<Product>>(CacheProductKey));
+            var prodocts = _memoryCache.Get<IEnumerable<Product>>(CacheProductKey);
+            return Task.FromResult(prodocts);
         }
 
         public Task<Product> GetByIdAsync(int id)
         {
             var product = _memoryCache.Get<List<Product>>(CacheProductKey).FirstOrDefault(x => x.Id == id);
 
-            if(product == null)
+            if (product == null)
             {
                 throw new NotFoundExeption($"{typeof(Product).Name} Id:{id} : not found.");
             }
 
-           return Task.FromResult(product);
+            return Task.FromResult(product);
         }
 
         public Task<CustomResponseDto<List<ProductWithCategory>>> GetProductsWithCategory()
@@ -89,34 +90,34 @@ namespace NLayer.Caching
 
         public async Task RemoveAsync(Product entity)
         {
-             _repository.Remove(entity);
+            _repository.Remove(entity);
             await _unitOfWork.CommitAsync();
             await CacheAllProductsAsync();
         }
 
         public async Task RemoveRangeAsync(IEnumerable<Product> entities)
         {
-           _repository.RemoveRange(entities);
+            _repository.RemoveRange(entities);
             await _unitOfWork.CommitAsync();
-            await CacheAllProductsAsync();  
+            await CacheAllProductsAsync();
         }
 
         public async Task UpdateAsync(Product entity)
         {
             _repository.Update(entity);
-            await _unitOfWork.CommitAsync();    
+            await _unitOfWork.CommitAsync();
             await CacheAllProductsAsync();
         }
 
         public IQueryable<Product> Where(Expression<Func<Product, bool>> expression)
         {
-           return _memoryCache.Get<List<Product>>(CacheProductKey).Where(expression.Compile()).AsQueryable(); 
+            return _memoryCache.Get<List<Product>>(CacheProductKey).Where(expression.Compile()).AsQueryable();
         }
 
         public async Task CacheAllProductsAsync()
         {
             //Bu Method ne Yapıyo  ? - Her çağırdığımda sıfırdan Data'yı çekip Cachliyor
-            _memoryCache.Set(CacheProductKey, await _repository.GetAll().ToListAsync());    
+            _memoryCache.Set(CacheProductKey, await _repository.GetAll().ToListAsync());
         }
     }
 }
