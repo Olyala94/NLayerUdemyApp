@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using NLayer.Caching;
 using NLayer.Core.Repositories;
 using NLayer.Core.Services;
 using NLayer.Core.UnitOfWorks;
@@ -36,6 +37,8 @@ namespace NLayer.API.Modules
 
             //InstancePerLifetimeScope()  => Scope (Asp.Net Core daki Scope karşı geliyor)
             //InstancePerDependency()     => transient  (aynı işi yapıyorlar ama sadece methodları farklı , transiemte karşı geliyor)
+
+            builder.RegisterType<ProductServiceWithCaching>().As<IProductService>();
 
             base.Load(builder);
         }
